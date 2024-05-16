@@ -17,7 +17,7 @@ export const D3Svg: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
     viewBox: '0 -2000 2500 2000',
     types
   })
-  const [transform, setTransform] = useState(null);
+  const transform = useRef(null)
 
   const draw = useCallback(() => {
     if (!ref.current) return
@@ -26,8 +26,8 @@ export const D3Svg: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
       svg.select('g').remove()
     }
     const g = svg.append('g')
-    if (transform) {
-      g.attr('transform', transform)
+    if (transform.current) {
+      g.attr('transform', transform.current)
     }
     const {lineWidth, strokeColor, viewBox, types} = state
     dxf.entities.forEach((e: any) => {
@@ -137,11 +137,11 @@ export const D3Svg: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
     const zoom = d3.zoom()
       .scaleExtent([0.001, 1000])
       .on('zoom', (e) => {
-        setTransform(e.transform)
+        transform.current = e.transform
         g.attr('transform', e.transform)
       })
     svg.call(zoom as any)
-  }, [dxf.entities, state, transform])
+  }, [dxf.entities, state])
 
   const download = useCallback(() => {
     const svg = d3.select(ref.current!)?.node()?.outerHTML
