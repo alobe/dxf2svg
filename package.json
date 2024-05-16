@@ -13,11 +13,14 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.0.4",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "css-doodle": "^0.39.1",
+    "d3": "^7.9.0",
     "dxf-parser": "^1.1.2",
+    "lodash-es": "^4.17.21",
     "lucide-react": "^0.378.0",
     "next": "14.1.0",
     "react": "^18",
@@ -29,6 +32,8 @@
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.11.3",
     "@cloudflare/workers-types": "^4.20240512.0",
+    "@types/d3": "^7.4.3",
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

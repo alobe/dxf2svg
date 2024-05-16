@@ -5,8 +5,12 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { GravityUiFileArrowDown } from '@/components/icons/loading'
 import { Bg } from '@/components/Bg'
+import { PointForm } from '@/components/pointForm'
+
+type Dxf = ReturnType<typeof parseDxf>
 
 export default function Home() {
+  const [dxf, setDxf] = useState<Dxf>()
   const [svgStr, setSvgStr] = useState('')
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,8 +20,7 @@ export default function Home() {
       reader.onload = (e: any) => {
         const data = e.target?.result
         if (data) {
-          const svg = parseDxf(data)
-          setSvgStr(svg)
+          setDxf(parseDxf(data))
         }
       }
       reader.readAsText(file)
@@ -42,6 +45,12 @@ export default function Home() {
       <img src="/logo.webp" className="h-[120px] rounded-[12px] mt-7" alt="logo" />
       <div className="mt-7 w-full px-16 flex flex-col items-center">
         <Input className='w-[200px] cursor-pointer' type="file" onChange={handleFileInputChange} accept=".dxf"/>
+        {dxf ? (
+          <div className="flex bg-white rounded p-2 flex-row mt-5">
+            <pre className='rounded p-4 mr-3 max-h-[400px] overflow-y-auto'>{JSON.stringify(dxf.percentile, null, 2)}</pre>
+            <PointForm onSubmit={(min, max) => setSvgStr(dxf.getSvg(min, max)) } />
+          </div>
+        ) : null}
         {svgStr ? (
           <>
             <div className='mt-6 w-[700px] bg-white border rounded p-2 border-purple-400' dangerouslySetInnerHTML={{ __html: svgStr }} />
