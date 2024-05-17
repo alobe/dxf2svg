@@ -6,6 +6,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { GravityUiFileArrowDown } from '@/components/icons/loading'
 import { uniq } from 'lodash-es';
+import { useWindowSize } from 'react-use'
 import * as d3 from 'd3'
 
 export const D3Svg: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
@@ -17,6 +18,7 @@ export const D3Svg: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
     viewBox: '0 -2000 2500 2000',
     types
   })
+  const { width, height } = useWindowSize()
   const transform = useRef(null)
 
   const draw = useCallback(() => {
@@ -163,15 +165,15 @@ export const D3Svg: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
   
   return (
     <>
-      <div className="flex flex-row gap-x-4 items-center mt-4 bg-white rounded py-2 px-4">
-        线宽
+      <div className="flex flex-row gap-x-4 gap-y-2 items-center mt-4 bg-white rounded py-2 px-4 flex-wrap max-w-[80%]">
+        lineWidth
         <Input className='w-[200px]' type='number' value={state.lineWidth} onChange={(e) => setState({ ...state, lineWidth: +e.target.value })}/>
-        颜色
+        lineColor
         <Input className='w-[200px]' value={state.strokeColor} onChange={(e) => setState({ ...state, strokeColor: e.target.value })}/>
-        视窗viewBox
+        SVG viewBox
         <Input className='w-[200px]' value={state.viewBox} onChange={(e) => setState({ ...state, viewBox: e.target.value })}/>
       </div>
-      <div className="flex flex-row gap-x-3 items-center mt-2 bg-white rounded py-2 px-4">
+      <div className="flex flex-row gap-x-3 gap-y-1 items-center mt-2 bg-white rounded py-2 px-4 flex-wrap max-w-[80%]">
         {types.map((type) => {
           const checked = state.types.includes(type)
           return (
@@ -183,9 +185,9 @@ export const D3Svg: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
         })}
       </div>
       <div className="bg-white mt-2 border border-gray-300 rounded p-4">
-        <svg xmlns="http://www.w3.org/2000/svg" ref={ref} width={1000} height={700}/>
+        <svg xmlns="http://www.w3.org/2000/svg" ref={ref} width={width * 3 / 4} height={height * 2 / 3}/>
       </div>
-      <Button className='mt-4 bg-purple-500 hover:bg-purple-400' onClick={download}><GravityUiFileArrowDown className='h-4 w-4 mr-2'/>下载</Button>
+      <Button className='mt-4 bg-purple-500 hover:bg-purple-400' onClick={download}><GravityUiFileArrowDown className='h-4 w-4 mr-2'/>Download</Button>
     </>
   )
 };

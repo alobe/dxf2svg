@@ -4,10 +4,12 @@ import { useState, useRef, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { D3Svg } from '@/components/d3Svg'
 import { Bg } from '@/components/Bg'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 export default function D3() {
   const p = new DxfParser()
   const [dxf, setDxf] = useState<IDxf>()
+  const [ref] = useAutoAnimate()
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -25,7 +27,7 @@ export default function D3() {
   }
   
   return (
-    <div className="min-h-screen w-full flex flex-col items-center pb-7">
+    <div className="min-h-screen w-full flex flex-col items-center pb-7" ref={ref}>
       <Bg/>
       <div className="h-[60px] w-[60px] fixed top-3 left-3 overflow-hidden flex items-center justify-center rounded-full">
         <img src="/logo.webp" className="h-[60px] scale-[1.2] object-cover" alt="logo" />
