@@ -27,7 +27,9 @@ export default function D3() {
   return (
     <div className="min-h-screen w-full flex flex-col items-center pb-7">
       <Bg/>
-      <img src="/logo.webp" className="h-[120px] rounded-[12px] mt-7" alt="logo" />
+      <div className="h-[60px] w-[60px] fixed top-3 left-3 overflow-hidden flex items-center justify-center rounded-full">
+        <img src="/logo.webp" className="h-[60px] scale-[1.2] object-cover" alt="logo" />
+      </div>
       <Input className='w-[200px] flex-none cursor-pointer mt-6' type="file" onChange={handleFileInputChange} accept=".dxf"/>
       {dxf && <D3Svg dxf={dxf} />}
     </div>
