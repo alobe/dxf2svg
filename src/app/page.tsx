@@ -9,6 +9,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 export default function D3() {
   const p = new DxfParser()
   const [dxf, setDxf] = useState<IDxf>()
+  const [fName, setFName] = useState('');
   const [ref] = useAutoAnimate()
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +20,10 @@ export default function D3() {
         const data = e.target?.result
         if (data) {
           const dxf = p.parseSync(data)
-          if (dxf) setDxf(dxf)
+          if (dxf) {
+            setDxf(dxf)
+            setFName(file.name)
+          }
         }
       }
       reader.readAsText(file)
@@ -33,7 +37,7 @@ export default function D3() {
         <img src="/logo.webp" className="h-[60px] scale-[1.2] object-cover" alt="logo" />
       </div>
       <Input className='w-[200px] flex-none cursor-pointer mt-6' type="file" onChange={handleFileInputChange} accept=".dxf"/>
-      {dxf && <D3Svg dxf={dxf} />}
+      {dxf && <D3Svg key={fName} dxf={dxf} />}
     </div>
   )
 }

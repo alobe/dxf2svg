@@ -1,16 +1,17 @@
 'use client';
 import { IDxf } from 'dxf-parser'
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, memo } from 'react'
 import { Input } from '@/components/ui/input'
 import { Checkbox } from '@/components/ui/checkbox'
-import { Button } from '@/components/ui/button'
 import { GravityUiFileArrowDown } from '@/components/icons/loading'
+import { Reset } from '@/components/icons'
 import { uniq } from 'lodash-es';
 import { useWindowSize } from 'react-use'
 import * as d3 from 'd3'
 
-export const D3Svg: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
+const C: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
   const ref = useRef<SVGSVGElement>(null)
+  const reload = useRef<() => void>()
   const types = uniq(dxf.entities.map(e => e.type))
   const [state, setState] = useState({
     lineWidth: 1,
@@ -143,6 +144,7 @@ export const D3Svg: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
         g.attr('transform', e.transform)
       })
     svg.call(zoom as any)
+    reload.current = () => zoom.transform(svg as any, d3.zoomIdentity)
   }, [dxf.entities, state])
 
   const download = useCallback(() => {
@@ -184,10 +186,15 @@ export const D3Svg: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
           )
         })}
       </div>
-      <div className="bg-white mt-2 border border-gray-300 rounded p-4">
+      <div className="bg-white mt-2 border border-gray-300 rounded p-4 relative">
+        <div className="absolute top-4 right-4 z-10 flex items-center flex-col gap-1">
+          <Reset className=' hover:bg-purple-300 p-1 rounded text-[30px] text-purple-500 cursor-pointer' onClick={() => reload.current?.()}/>
+          <GravityUiFileArrowDown className='hover:bg-purple-300 p-1 rounded text-[30px] text-purple-500 cursor-pointer' onClick={download}/>
+        </div>
         <svg xmlns="http://www.w3.org/2000/svg" ref={ref} width={width * 3 / 4} height={height * 2 / 3}/>
       </div>
-      <Button className='mt-4 bg-purple-500 hover:bg-purple-400' onClick={download}><GravityUiFileArrowDown className='h-4 w-4 mr-2'/>Download</Button>
     </>
   )
-};
+}
+
+export const D3Svg = memo(C)
