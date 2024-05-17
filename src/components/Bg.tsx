@@ -5,7 +5,7 @@ export const Bg = () => {
     :doodle {
       @grid: 1x8 / 100vmax;
       position: absolute;
-      top: -100px; left: 300px;
+      top: 0; left: 0;
       z-index: 0;
     }
 
@@ -24,7 +24,7 @@ export const Bg = () => {
         #6cf5f3@repeat(2, @p([0-9a-f]))
       ))
       @r(0%, 100%) @r(0%, 100%) /
-      @r(7px) @r(23vmin)
+      @r(6px) @r(23vmin)
       no-repeat
     ));
 
@@ -37,7 +37,7 @@ export const Bg = () => {
   `
   return (
     <div className="h-screen w-screen fixed overflow-hidden bg-black z-[-10]">
-      <Doodle className="h-full overflow-hidden absolute top-0 bottom-0 left-0 right-0" rule={str} doodleStyle={`transform:rotate(45deg)translate(-25%,0);`} />
+      <Doodle className="h-full overflow-hidden absolute top-0 bottom-0 left-0 right-0" rule={str} doodleStyle={`transform:rotate(176deg);`} />
     </div>
   )
 }
