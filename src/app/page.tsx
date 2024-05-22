@@ -2,8 +2,8 @@
 import DxfParser, { IDxf } from 'dxf-parser'
 import { useState, useRef } from 'react'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { D3Svg } from '@/components/d3Svg'
+// import { D3Svg } from '@/components/d3Svg'
+import { SvgV2 } from '@/components/svgV2'
 import { Bg } from '@/components/Bg'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { TrashCan } from '@/components/icons';
@@ -43,7 +43,7 @@ export default function D3() {
         <Input ref={ri} className='w-[200px] flex-none cursor-pointer' type="file" onChange={handleFileInputChange} accept=".dxf"/>
          {!!dxf && <TrashCan className='text-[40px] text-red-500 ml-3 hover:bg-red-400 hover:text-white bg-red-100 p-2 rounded cursor-pointer' onClick={() => (ri.current!.value = '', setDxf(undefined))} />}
       </div>
-      {dxf ? <D3Svg key={fName} dxf={dxf} /> : (
+      {dxf ? <SvgV2 key={fName} dxf={dxf} /> : (
         <div className="text-white text-center mt-6 text-[20px] font-bold max-w-[50%] min-w-[300px]">
           dxf2svg is a tool that helps you convert DXF file into SVG file. It also supports previewing the converted SVG file (such as zooming in and out, and dragging to move) and offers some basic editing features (such as adjusting line thickness and color, modifying the SVG viewBox setting, and controlling the visibility of certain elements from the DXF file).
         </div>

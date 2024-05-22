@@ -9,6 +9,11 @@ import { uniq } from 'lodash-es';
 import { useWindowSize } from 'react-use'
 import * as d3 from 'd3'
 
+export interface Point {
+  x: number
+  y: number
+}
+
 const C: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
   const ref = useRef<SVGSVGElement>(null)
   const reload = useRef<() => void>()
@@ -33,15 +38,24 @@ const C: React.FC<{ dxf: IDxf }> = ({ dxf }) => {
       g.attr('transform', transform.current)
     }
     const {lineWidth, strokeColor, viewBox, types} = state
+    const lineSet = new Set<string>()
+    const fmt = (n: number) => Math.round(n * 100) / 100
+    const filterLinePoints = (p1: Point, p2: Point) => {
+      const s = `${fmt(p1.x)},${fmt(p1.y)},${fmt(p2.x)},${fmt(p2.y)}`
+      if (lineSet.has(s)) return false
+      lineSet.add(s)
+      return true
+    }
     dxf.entities.forEach((e: any) => {
       switch (e.type) {
         case 'LINE':
           if (!types.includes('LINE')) return
+          if (!filterLinePoints(e.vertices[0], e.vertices[1])) return
           g.append('line')
-            .attr('x1', e.vertices[0].x)
-            .attr('y1', -e.vertices[0].y)
-            .attr('x2', e.vertices[1].x)
-            .attr('y2', -e.vertices[1].y)
+            .attr('x1', fmt(e.vertices[0].x))
+            .attr('y1', -fmt(e.vertices[0].y))
+            .attr('x2', fmt(e.vertices[1].x))
+            .attr('y2', -fmt(e.vertices[1].y))
             .attr('stroke', strokeColor)
             .attr('stroke-width', lineWidth)
             .attr('stroke-linecap', 'round')
